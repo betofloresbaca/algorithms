@@ -1,7 +1,5 @@
 package sorting
 
-import "fmt"
-
 func mergeSort(data []int) []int {
 	// Base case
 	if len(data) <= 1 {
@@ -32,11 +30,4 @@ func mergeSort(data []int) []int {
 		reIdx++
 	}
 	return result
-}
-
-func MergeSortMain() {
-	data := []int{13, 3, 12, 8, 37, 4, 9, 2, 15, 20}
-	fmt.Printf("Original: %v\n", data)
-	data = mergeSort(data)
-	fmt.Printf("Merge Sort: %v\n", data)
 }

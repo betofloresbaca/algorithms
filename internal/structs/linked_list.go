@@ -81,14 +81,27 @@ func (ll *LinkedList[T]) Shift() (T, error) {
 	return value, nil
 }
 
+func (ll *LinkedList[T]) Iterator() <-chan T {
+	channel := make(chan T)
+	go func() {
+		defer close(channel)
+		for node := ll.first; node != nil; node = node.next {
+			channel <- node.value
+		}
+	}()
+	return channel
+}
+
 func (ll *LinkedList[T]) String() string {
 	var sb strings.Builder
 	sb.WriteString("[")
-	for node := ll.first; node != nil; node = node.next {
-		sb.WriteString(fmt.Sprintf("%v", node.value))
-		if node.next != nil {
+	first := true
+	for value := range ll.Iterator() {
+		if !first {
 			sb.WriteString(" ")
 		}
+		sb.WriteString(fmt.Sprintf("%v", value))
+		first = false
 	}
 	sb.WriteString("]")
 	return sb.String()
